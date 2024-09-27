@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Details Search</title>
+  <style>
+    body {
+      background-color: pink;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #ff69b4;
+    }
+    .form-group {
+      margin: 1px 0;
+    }
+    input {
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+        margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Search Student Details</h1>
+    <form action="/search" method="POST">
+      <div class="form-group">
+        <input type="text" name="enrollment_no" placeholder="Enter Enrollment Number" required>
+      </div>
+      <button type="submit">Search</button>
+    </form>
+    
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+
+    <% if (student) { %>
+      <div class="student-details">
+        <h2>Student Details</h2>
+        <p>Name: <%= student.name %></p>
+        <p>Class: <%= student.class %></p>
+        <p>Section: <%= student.section %></p>
+        <p>Enrollment Number: <%= student.enrollment_no %></p>
+        <p>Email: <%= student.email %></p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

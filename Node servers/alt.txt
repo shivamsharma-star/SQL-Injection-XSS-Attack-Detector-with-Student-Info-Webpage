@@ -1,0 +1,59 @@
+// you can use this code also foer machine learning at the tiime of our python server down you can use thisb code in the place of post request
+app.post('/search', (req, res) => {
+  const enrollmentNo = req.body.enrollment_no;
+  
+  // Machine Learning detection for SQL Injection (Basic Example)
+  const regex = /['"=;]/;  // Detecting common SQL injection characters
+  if (regex.test(enrollmentNo)) {
+    return res.render('index', { student: null, error: 'Potential SQL Injection detected!' });
+  }
+
+  // Search student details
+  const query = 'SELECT * FROM student_details WHERE enrollment_no = ?';
+  db.query(query, [enrollmentNo], (err, results) => {
+    if (err) throw err;
+
+    if (results.length > 0) {
+      res.render('index', { student: results[0], error: null });
+    } else {
+      res.render('index', { student: null, error: `Enrollment number ${enrollmentNo} is not present in the database` });
+    }
+  });
+});
+
+// api handling coder is following 
+
+app.post('/search', async (req, res) => {
+    const enrollmentNo = req.body.enrollment_no;
+
+    // Send user input to Python API for SQL Injection & XSS detection
+    try {
+        const response = await axios.post('http://127.0.0.1:5000/detect', {
+            input: enrollmentNo
+        }, {
+            headers: {
+                'Content-Type': 'application/json'  // Set Content-Type header to application/json
+            }
+        });
+
+        // If no error, proceed to search in the database
+        if (response.data.status === 'ok') {
+            const query = 'SELECT * FROM student_details WHERE enrollment_no = ?';
+            db.query(query, [enrollmentNo], (err, results) => {
+                if (err) throw err;
+
+                if (results.length > 0) {
+                    res.render('index', { student: results[0], error: null });
+                } else {
+                    res.render('index', { student: null, error: `Enrollment number ${enrollmentNo} is not present in the database` });
+                }
+            });
+        } else {
+            // If SQL Injection or XSS is detected, show error message
+            res.render('index', { student: null, error: response.data.message });
+        }
+    } catch (error) {
+        console.error(error);
+        res.render('index', { student: null, error: 'Error occurred while processing the request' });
+    }
+});
