@@ -1,0 +1,26 @@
+input_text,label
+"SELECT * FROM users",1
+"Hello, how are you?",0
+"DROP TABLE students;",1
+"Welcome to the site!",0
+"<script>alert('XSS')</script>",1
+"Normal text message.",0
+"if a==10",1
+"/[]",1
+"SELECT username FROM users WHERE id=1",1
+"alert('hello world')",1
+"INSERT INTO users (username, password) VALUES ('admin', 'admin')",1
+"Nice to meet you!",0
+"SELECT * FROM orders WHERE order_id=100",1
+"Goodbye!",0
+"ENR001",0
+"ENR002",0
+"ENR003",0
+"ENR004",0
+"ENR005",0
+"ENR006",0
+"ENR007",0
+"ENR008",0
+"ENR009",0
+"ENR010",0
+
